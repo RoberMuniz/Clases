@@ -20,33 +20,45 @@ as.numeric(y)
 
 A<-1
 years<-2010:2020
+year <- seq(2010,2020, by = 0.5)
 tiktoc<-c("Que", "linda", "te ves", "limpiando", "Esperancita")
+
 m1<-matrix(1:4,2,2)
-a1<-array(1:12,dim = c(2,2,3))
+m1%*%t(m1) #multiplicacion de la matriz
+diag(m1) #Diagonal de la matriz
+solve(m1) #inversa de la matriz
+
+
+a1<-array(1:12,dim = c(2,2,3)) #Los array tienen 3 dimensiones, tiene filas, columnas y profundidad.
+a1
+
 d1<-data.frame(m1)
-data("quakes") # promise
+data("quakes") # promise 
 d1<-data.frame(quakes)
 
 ls()
-l1<-list(A=A,years,tiktoc,m1)
+l1<-list(NumeroUno = A,years,tiktoc,m1)
+l1[1]
 
 # Manipulación de Objetos
 ls()
 
 class(A)
-typeof(A)
+typeof(A) #explica como estan guardados los elementos, en esta caso indica que es de tipo "double" porque tiene decimales, para forzar a un entero debo definir el objeto y ponerle la letra "L" mayuscula al lado del numero.
 
 length(years)
 dim(m1)
+
 object.size(d1)
 
-names(d1)
-head(d1)
-tail(d1)
+names(d1) #me indica los nombres de las columnas dentro de la base de datos d1.
+head(d1) #imprime las 6 primeras observaciones de la base de datos
+tail(d1) #imprime las 6 ultimas observaciones.
 
-rm(l1)
+rm(A)
 
 #Bonus: como se borra todo?
+rm(list = ls()) 
 
 # Indexación uso de los []
 
@@ -54,26 +66,39 @@ length(years)
 years[1]
 
 dim(m1)
-m1[2,3]
+m1[2,2] #deme la segunda fila y segunda columna
+m1[1] #si no pongo la "," asume la primera fila y desplaza recorriendo la fila completa.
 
 dim(a1)
-a1[2,1,3]
+a1[2,1,3] #(fila,columna,profundidad)
 
 l1[2]
 l1[2][[1]][1:2]
 
-l1[[2]][1:2]
+l1[[2]][1:2] #el doble corchete me manda directo al objeto 2, pero como fue creado en su naturaleza, no como una lista
 
-d1[1,]
-d1[,1]
+d1[1,] # dataframe tiene 2 dimensiones 1000 y 5. al dejar en blanco la segunda posicion imprime las 5 columnas.
+d1[,1] 
+d1[,'lat']
+d1$mag[seq(1,16,2)]
+
 d1$lat[1:4]
+
 d1[,'lat']
 d1[1:4,c('lat','long')]
+
+
 d1$mag>5
 table(d1$mag>5)
-d1[d1$mag>6,]
+d1[d1$mag>6,] #en las filas,quiero saber cuales son mayores a 6, se escribe todo porque esto fue antes de la ",".
+
+
 d1$dummy_5up<-as.numeric(d1$mag>5)
 head(d1)
+
+
+hola()
+
 
 # Distinguir entre funciones, objetos, números y sintaxis básica
 # Funciones: palabra + () con argumentos separados por commas
@@ -92,7 +117,7 @@ if(A==1){
 }
 
 
-for(i in 1:5){
+  for(i in 1:5){
   print(paste("Me le declaro a la ", i))
   Sys.sleep(2)
   print("no mejor no... fail!")
@@ -100,6 +125,7 @@ for(i in 1:5){
 }
 
 i<-1
+eps<-50/(i^2)
 while(eps>0.001){
   eps<-50/(i^2)
   print(paste("eps value es still..", eps))
@@ -121,6 +147,7 @@ tapply(X = quakes$mag,INDEX = quakes$stations, FUN = mean)
 #https://rstudio.com/wp-content/uploads/2015/02/data-wrangling-cheatsheet.pdf
 library(tidyverse)
 #Cómo se instala el paquete si no lo tengo? Tank!!! ayudaaaa!
+#install.packages("tydiverse")
 
 quakes %>% 
   filter(mag>6) %>% 
@@ -132,12 +159,13 @@ quakes %>%
 
 
 ### 3. data.table (recommended in this course)
+install.packages("data.table")
 library(data.table)
 #https://github.com/rstudio/cheatsheets/raw/master/datatable.pdf
 
 quakes<-data.table(quakes)
 
-quakes[mag>6,.(mag)]
+quakes[mag>6,.(mag,depth)]
 
 quakes[,mean(mag),by=.(stations)]
 
