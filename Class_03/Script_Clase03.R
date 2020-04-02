@@ -138,3 +138,4 @@ ggplot(zonas_valparaiso2) +
 hist(zonas_valparaiso$AdultosMayores,main = "Histograma Adultos Mayores Viña-Valpo")
 
 hist(zonas_valparaiso2$AdultosMayores,main = "Histograma Adultos Mayores Viña-Valpo")
+
